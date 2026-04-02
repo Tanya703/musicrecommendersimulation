@@ -41,9 +41,7 @@ Each `Song` uses two types of features:
 preferred_mood         = "chill"
 preferred_genre        = "lofi"
 preferred_energy       = 0.75
-preferred_acousticness = 0.25
-preferred_valence      = 0.70
-preferred_danceability = 0.75
+preferred_acousticness = True 
 ```
 
 ### How the Recommender Scores Each Song
@@ -121,9 +119,8 @@ Once every song has a score, the ranking rule builds the final list:
 5. Return top N
 
 ### Full Flow
-
-
-###Potential Biases
+<img src="dataflow.png" alt="Dataflow" width="200" />
+### Potential Biases
 -the system has mood as the highest weight, it will favour songs with right mood over mached genre
 -acoustic preference is binary, so it will treat user who slightly likes and who exclusively listens to acoustic music the same
 -tempo, danceability, or valence factors are ignored
