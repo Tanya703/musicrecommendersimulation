@@ -11,7 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This version implements a complete content-based music recommender system in Python. It represents 18 songs as structured data, stores a user's taste as a preference profile (genre, mood, energy, acoustic preference), and scores every song in the catalog against that profile using a weighted formula. The result is a ranked list of recommendations with a score explanation for each one. The system also includes 9 user profiles — including adversarial edge cases designed to expose where the scoring logic breaks down.
 
 ---
 
@@ -123,13 +123,10 @@ Once every song has a score, the ranking rule builds the final list:
 
 ### Potential Biases
 
--the system has mood as the highest weight, it will favour songs with right mood over mached genre
--acoustic preference is binary, so it will treat user who slightly likes and who exclusively listens to acoustic music the same
--tempo, danceability, or valence factors are ignored
--fixed user profile
-
-
-```
+- **Mood dominates everything.** At 35% weight, a song with the right mood but wrong genre will rank higher than a song with the right genre but slightly off mood.
+- **Acousticness is binary.** A user who slightly prefers acoustic songs is treated identically to someone who exclusively listens to acoustic music.
+- **Tempo, danceability, and valence are ignored.** These features are stored on each song but never used in scoring — two songs with opposite valence look identical to the recommender.
+- **Fixed user profile.** There is no learning or feedback loop. The same preferences are used for every recommendation regardless of what the user actually listens to.
 
 ---
 
@@ -143,6 +140,7 @@ Once every song has a score, the ranking rule builds the final list:
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
    .venv\Scripts\activate         # Windows
+   ```
 
 2. Install dependencies
 
@@ -170,23 +168,86 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+### Standard Profiles — Does it work when everything lines up?
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+These three profiles test the basic case: a listener whose genre, mood, and energy all point in the same direction.
+
+**Chill Lofi** — a listener who wants calm, acoustic lofi music at low energy.
+The system gave exactly the right results. The top two songs were both lofi and chill, with the more acoustic one ranked first. Everything matched and the scores reflected it clearly.
+
+<img src="testimages/Screenshot 2026-04-02 145223.png" alt="Chill Lofi results" width="500"/>
+
+---
+
+**High-Energy Pop** — a listener who wants upbeat, electronic pop at high energy.
+Again a clean result. Sunrise City (pop, happy, high energy) came out on top with a near-perfect score. The system correctly rewarded songs that matched on all three main dimensions.
+
+<img src="testimages/Screenshot 2026-04-02 145306.png" alt="High-Energy Pop results" width="500"/>
+
+---
+
+**Deep Intense Rock** — a listener who wants loud, intense rock at very high energy.
+Storm Runner scored 0.98 — almost perfect. Rock and intense mood aligned exactly. The system also surfaced a pop track (Gym Hero) in second place because its energy was a near-perfect match, even though the genre was off. This was the first hint that energy can sometimes matter more than genre.
+
+<img src="testimages/Screenshot 2026-04-02 145320.png" alt="Deep Intense Rock results" width="500"/>
+
+---
+
+### Adversarial Profiles — What happens when the preferences conflict?
+
+These profiles were designed to push the system into tricky situations where no song can satisfy all four preferences at once. The goal was to see what the system does when it has to make a trade-off.
+
+---
+
+**Sad Headbanger** — a listener who wants metal music but is in a sad mood.
+The problem: sad and aggressive are treated as completely unrelated moods, so mood gave zero points to every metal song. The system ended up recommending the right songs (metal and rock) purely because of genre and energy — but for the wrong reason. The mood preference was completely ignored.
+
+<img src="testimages/Screenshot 2026-04-02 145346.png" alt="Sad Headbanger results" width="500"/>
+
+---
+
+**Acoustic Headbanger** — a listener who wants intense rock at very high energy but also prefers acoustic instruments.
+The problem: almost every high-energy song in the catalog is electronic or electric, not acoustic. The system kept recommending the same loud rock songs as before, and the acoustic preference barely changed the rankings at all. When preferences contradict each other, the heavier weights win and the lighter one is drowned out.
+
+<img src="testimages/Screenshot 2026-04-02 145359.png" alt="Acoustic Headbanger results" width="500"/>
+
+---
+
+**Lofi Minimalist** — a listener who wants lofi and chill, but prefers electronic over acoustic, and has a very specific energy target (0.385) that falls exactly between two equally good lofi songs.
+The problem: both top songs matched mood, genre, and energy almost identically. The only thing that separated them was acousticness — even though that was only 15% of the score. Midnight Coding (less acoustic) came out first over Library Rain (very acoustic) purely because of that one flag. A tiny preference became the deciding factor.
+
+<img src="testimages/Screenshot 2026-04-02 145415.png" alt="Lofi Minimalist results" width="500"/>
+
+---
+
+**Romantic Metalhead** — a listener who prefers metal but is in a romantic mood, wants low energy, and likes acoustic instruments — basically the opposite of what metal sounds like.
+The system recommended Ivory Rain (classical) as the top result instead of any metal song. Three out of four preferences (mood, energy, acousticness) pointed away from metal, so classical won even though metal was the stated genre preference. This shows that genre alone (25% weight) is not enough to override everything else.
+
+<img src="testimages/Screenshot 2026-04-02 145427.png" alt="Romantic Metalhead results" width="500"/>
+
+---
+
+**Tired Raver** — a listener who wants electronic music at very high energy but is in a serene, calm mood.
+The problem: serene and energetic are treated as completely unrelated, so no high-energy song earned any mood points at all. The top results were purely driven by genre and energy. The system basically pretended the mood preference didn't exist — the same failure as Sad Headbanger, but in a different direction.
+
+<img src="testimages/Screenshot 2026-04-02 145439.png" alt="Tired Raver results" width="500"/>
+
+---
+
+**Max Energy Seeker** — a listener who wants pop music at the absolute maximum energy (1.0).
+No song in the catalog hits 1.0 energy, so every result is a partial match. Gym Hero (pop, intense, 0.93 energy) came first — which makes sense. But Storm Runner (rock, not pop) came second, beating out other pop songs because its energy of 0.91 was closer to 1.0 than theirs. A tiny energy advantage was enough to push a rock song above pop songs for a pop listener.
+
+<img src="testimages/Screenshot 2026-04-02 145457.png" alt="Max Energy Seeker results" width="500"/>
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
+- **Tiny catalog.** With only 18 songs, many user profiles converge on the same top results. The diversity enforcement rule barely activates.
+- **No user feedback loop.** Preferences never update — a user whose taste changes keeps getting the same recommendations forever.
+- **Binary acoustic preference.** Can't express "I slightly prefer acoustic" — the flag is all or nothing, treating a casual preference the same as an absolute one.
+- **Mood weight is aggressive.** At 35%, a mood mismatch can override genre, energy, and acousticness combined — producing counterintuitive results for edge-case users (see Sad Headbanger above).
+- **Does not understand lyrics or context.** Two songs with identical feature values are indistinguishable, even if one is a lullaby and one is a workout track.
 
 You will go deeper on this in your model card.
 
@@ -198,10 +259,7 @@ Read and complete `model_card.md`:
 
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+Building this made me realise how much is happening behind something that feels effortless. The system turns your taste into four numbers, runs a formula, and returns a ranked list — but the results are only as good as the weights and what the catalog contains. Small changes in either completely change what you get. I was surprised by how often one song kept showing up across totally different listener profiles, not because it was a great match for anyone, but because it was average enough at everything to beat more specific songs that were missing one dimension. The most striking example was the Romantic Metalhead — a listener whose favourite genre was metal ended up with a classical song as their top recommendation. It showed me how much thought, testing and iteration goes into designing recommendation system that works well for all users.
 
 
 ---
