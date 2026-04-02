@@ -119,8 +119,10 @@ Once every song has a score, the ranking rule builds the final list:
 5. Return top N
 
 ### Full Flow
-<img src="dataflow.png" alt="Dataflow" width="200" />
+<img src="dataflow.png" alt="Dataflow" width="500" />
+
 ### Potential Biases
+
 -the system has mood as the highest weight, it will favour songs with right mood over mached genre
 -acoustic preference is binary, so it will treat user who slightly likes and who exclusively listens to acoustic music the same
 -tempo, danceability, or valence factors are ignored
