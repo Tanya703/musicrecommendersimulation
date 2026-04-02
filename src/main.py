@@ -108,7 +108,6 @@ def print_recommendations(label: str, recommendations) -> None:
         print(f"Reasons: {explanation}")
         print()
 
-
 def main() -> None:
     songs = load_songs(DATA_PATH)
     print(f"Loaded songs: {len(songs)}")
