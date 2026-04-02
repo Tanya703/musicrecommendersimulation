@@ -25,20 +25,21 @@ MOOD_SIMILARITY: Dict[str, Dict[str, float]] = {
 # Original genres: lofi, ambient, jazz, synthwave, pop, rock
 # Added: soul, metal, country, electronic, r&b, folk, drum and bass, classical
 GENRE_SIMILARITY: Dict[str, Dict[str, float]] = {
-    "lofi":         {"lofi": 1.0, "ambient": 0.6, "jazz": 0.4, "synthwave": 0.2, "pop": 0.1, "rock": 0.0, "soul": 0.3, "metal": 0.0, "country": 0.1, "electronic": 0.2, "r&b": 0.2, "folk": 0.4, "drum and bass": 0.1, "classical": 0.3},
-    "ambient":      {"lofi": 0.6, "ambient": 1.0, "jazz": 0.3, "synthwave": 0.3, "pop": 0.1, "rock": 0.0, "soul": 0.2, "metal": 0.0, "country": 0.0, "electronic": 0.4, "r&b": 0.1, "folk": 0.3, "drum and bass": 0.1, "classical": 0.5},
-    "jazz":         {"lofi": 0.4, "ambient": 0.3, "jazz": 1.0, "synthwave": 0.1, "pop": 0.2, "rock": 0.1, "soul": 0.5, "metal": 0.0, "country": 0.2, "electronic": 0.1, "r&b": 0.4, "folk": 0.3, "drum and bass": 0.1, "classical": 0.4},
-    "synthwave":    {"lofi": 0.2, "ambient": 0.3, "jazz": 0.1, "synthwave": 1.0, "pop": 0.4, "rock": 0.2, "soul": 0.1, "metal": 0.1, "country": 0.0, "electronic": 0.6, "r&b": 0.1, "folk": 0.0, "drum and bass": 0.3, "classical": 0.1},
-    "pop":          {"lofi": 0.1, "ambient": 0.1, "jazz": 0.2, "synthwave": 0.4, "pop": 1.0, "rock": 0.3, "soul": 0.3, "metal": 0.0, "country": 0.2, "electronic": 0.3, "r&b": 0.4, "folk": 0.2, "drum and bass": 0.1, "classical": 0.1},
-    "rock":         {"lofi": 0.0, "ambient": 0.0, "jazz": 0.1, "synthwave": 0.2, "pop": 0.3, "rock": 1.0, "soul": 0.1, "metal": 0.5, "country": 0.2, "electronic": 0.1, "r&b": 0.1, "folk": 0.2, "drum and bass": 0.1, "classical": 0.0},
-    "soul":         {"lofi": 0.3, "ambient": 0.2, "jazz": 0.5, "synthwave": 0.1, "pop": 0.3, "rock": 0.1, "soul": 1.0, "metal": 0.0, "country": 0.2, "electronic": 0.1, "r&b": 0.7, "folk": 0.2, "drum and bass": 0.0, "classical": 0.2},
-    "metal":        {"lofi": 0.0, "ambient": 0.0, "jazz": 0.0, "synthwave": 0.1, "pop": 0.0, "rock": 0.5, "soul": 0.0, "metal": 1.0, "country": 0.0, "electronic": 0.1, "r&b": 0.0, "folk": 0.0, "drum and bass": 0.2, "classical": 0.0},
-    "country":      {"lofi": 0.1, "ambient": 0.0, "jazz": 0.2, "synthwave": 0.0, "pop": 0.2, "rock": 0.2, "soul": 0.2, "metal": 0.0, "country": 1.0, "electronic": 0.0, "r&b": 0.1, "folk": 0.6, "drum and bass": 0.0, "classical": 0.1},
-    "electronic":   {"lofi": 0.2, "ambient": 0.4, "jazz": 0.1, "synthwave": 0.6, "pop": 0.3, "rock": 0.1, "soul": 0.1, "metal": 0.1, "country": 0.0, "electronic": 1.0, "r&b": 0.2, "folk": 0.0, "drum and bass": 0.5, "classical": 0.1},
-    "r&b":          {"lofi": 0.2, "ambient": 0.1, "jazz": 0.4, "synthwave": 0.1, "pop": 0.4, "rock": 0.1, "soul": 0.7, "metal": 0.0, "country": 0.1, "electronic": 0.2, "r&b": 1.0, "folk": 0.1, "drum and bass": 0.1, "classical": 0.1},
-    "folk":         {"lofi": 0.4, "ambient": 0.3, "jazz": 0.3, "synthwave": 0.0, "pop": 0.2, "rock": 0.2, "soul": 0.2, "metal": 0.0, "country": 0.6, "electronic": 0.0, "r&b": 0.1, "folk": 1.0, "drum and bass": 0.0, "classical": 0.3},
-    "drum and bass":{"lofi": 0.1, "ambient": 0.1, "jazz": 0.1, "synthwave": 0.3, "pop": 0.1, "rock": 0.1, "soul": 0.0, "metal": 0.2, "country": 0.0, "electronic": 0.5, "r&b": 0.1, "folk": 0.0, "drum and bass": 1.0, "classical": 0.0},
-    "classical":    {"lofi": 0.3, "ambient": 0.5, "jazz": 0.4, "synthwave": 0.1, "pop": 0.1, "rock": 0.0, "soul": 0.2, "metal": 0.0, "country": 0.1, "electronic": 0.1, "r&b": 0.1, "folk": 0.3, "drum and bass": 0.0, "classical": 1.0},
+    "lofi":         {"lofi": 1.0, "ambient": 0.6, "jazz": 0.4, "synthwave": 0.2, "pop": 0.1, "rock": 0.0, "soul": 0.3, "metal": 0.0, "country": 0.1, "electronic": 0.2, "r&b": 0.2, "folk": 0.4, "drum and bass": 0.1, "classical": 0.3, "indie pop": 0.2},
+    "ambient":      {"lofi": 0.6, "ambient": 1.0, "jazz": 0.3, "synthwave": 0.3, "pop": 0.1, "rock": 0.0, "soul": 0.2, "metal": 0.0, "country": 0.0, "electronic": 0.4, "r&b": 0.1, "folk": 0.3, "drum and bass": 0.1, "classical": 0.5, "indie pop": 0.2},
+    "jazz":         {"lofi": 0.4, "ambient": 0.3, "jazz": 1.0, "synthwave": 0.1, "pop": 0.2, "rock": 0.1, "soul": 0.5, "metal": 0.0, "country": 0.2, "electronic": 0.1, "r&b": 0.4, "folk": 0.3, "drum and bass": 0.1, "classical": 0.4, "indie pop": 0.2},
+    "synthwave":    {"lofi": 0.2, "ambient": 0.3, "jazz": 0.1, "synthwave": 1.0, "pop": 0.4, "rock": 0.2, "soul": 0.1, "metal": 0.1, "country": 0.0, "electronic": 0.6, "r&b": 0.1, "folk": 0.0, "drum and bass": 0.3, "classical": 0.1, "indie pop": 0.3},
+    "pop":          {"lofi": 0.1, "ambient": 0.1, "jazz": 0.2, "synthwave": 0.4, "pop": 1.0, "rock": 0.3, "soul": 0.3, "metal": 0.0, "country": 0.2, "electronic": 0.3, "r&b": 0.4, "folk": 0.2, "drum and bass": 0.1, "classical": 0.1, "indie pop": 0.7},
+    "rock":         {"lofi": 0.0, "ambient": 0.0, "jazz": 0.1, "synthwave": 0.2, "pop": 0.3, "rock": 1.0, "soul": 0.1, "metal": 0.5, "country": 0.2, "electronic": 0.1, "r&b": 0.1, "folk": 0.2, "drum and bass": 0.1, "classical": 0.0, "indie pop": 0.3},
+    "soul":         {"lofi": 0.3, "ambient": 0.2, "jazz": 0.5, "synthwave": 0.1, "pop": 0.3, "rock": 0.1, "soul": 1.0, "metal": 0.0, "country": 0.2, "electronic": 0.1, "r&b": 0.7, "folk": 0.2, "drum and bass": 0.0, "classical": 0.2, "indie pop": 0.2},
+    "metal":        {"lofi": 0.0, "ambient": 0.0, "jazz": 0.0, "synthwave": 0.1, "pop": 0.0, "rock": 0.5, "soul": 0.0, "metal": 1.0, "country": 0.0, "electronic": 0.1, "r&b": 0.0, "folk": 0.0, "drum and bass": 0.2, "classical": 0.0, "indie pop": 0.0},
+    "country":      {"lofi": 0.1, "ambient": 0.0, "jazz": 0.2, "synthwave": 0.0, "pop": 0.2, "rock": 0.2, "soul": 0.2, "metal": 0.0, "country": 1.0, "electronic": 0.0, "r&b": 0.1, "folk": 0.6, "drum and bass": 0.0, "classical": 0.1, "indie pop": 0.2},
+    "electronic":   {"lofi": 0.2, "ambient": 0.4, "jazz": 0.1, "synthwave": 0.6, "pop": 0.3, "rock": 0.1, "soul": 0.1, "metal": 0.1, "country": 0.0, "electronic": 1.0, "r&b": 0.2, "folk": 0.0, "drum and bass": 0.5, "classical": 0.1, "indie pop": 0.2},
+    "r&b":          {"lofi": 0.2, "ambient": 0.1, "jazz": 0.4, "synthwave": 0.1, "pop": 0.4, "rock": 0.1, "soul": 0.7, "metal": 0.0, "country": 0.1, "electronic": 0.2, "r&b": 1.0, "folk": 0.1, "drum and bass": 0.1, "classical": 0.1, "indie pop": 0.3},
+    "folk":         {"lofi": 0.4, "ambient": 0.3, "jazz": 0.3, "synthwave": 0.0, "pop": 0.2, "rock": 0.2, "soul": 0.2, "metal": 0.0, "country": 0.6, "electronic": 0.0, "r&b": 0.1, "folk": 1.0, "drum and bass": 0.0, "classical": 0.3, "indie pop": 0.4},
+    "drum and bass":{"lofi": 0.1, "ambient": 0.1, "jazz": 0.1, "synthwave": 0.3, "pop": 0.1, "rock": 0.1, "soul": 0.0, "metal": 0.2, "country": 0.0, "electronic": 0.5, "r&b": 0.1, "folk": 0.0, "drum and bass": 1.0, "classical": 0.0, "indie pop": 0.0},
+    "classical":    {"lofi": 0.3, "ambient": 0.5, "jazz": 0.4, "synthwave": 0.1, "pop": 0.1, "rock": 0.0, "soul": 0.2, "metal": 0.0, "country": 0.1, "electronic": 0.1, "r&b": 0.1, "folk": 0.3, "drum and bass": 0.0, "classical": 1.0, "indie pop": 0.1},
+    "indie pop":    {"lofi": 0.2, "ambient": 0.2, "jazz": 0.2, "synthwave": 0.3, "pop": 0.7, "rock": 0.3, "soul": 0.2, "metal": 0.0, "country": 0.2, "electronic": 0.2, "r&b": 0.3, "folk": 0.4, "drum and bass": 0.0, "classical": 0.1, "indie pop": 1.0},
 }
 
 @dataclass
@@ -75,30 +76,112 @@ class Recommender:
     Required by tests/test_recommender.py
     """
     def __init__(self, songs: List[Song]):
+        """Initialize the Recommender with a list of songs."""
         self.songs = songs
 
+    def _to_prefs(self, user: UserProfile) -> Dict:
+        """Convert a UserProfile dataclass into a preferences dict for score_song."""
+        return {
+            "favorite_genre": user.favorite_genre,
+            "favorite_mood":  user.favorite_mood,
+            "target_energy":  user.target_energy,
+            "likes_acoustic": user.likes_acoustic,
+        }
+
+    def _to_dict(self, song: Song) -> Dict:
+        """Convert a Song dataclass into a dict of scoring-relevant fields."""
+        return {
+            "genre":        song.genre,
+            "mood":         song.mood,
+            "energy":       song.energy,
+            "acousticness": song.acousticness,
+        }
+
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        # TODO: Implement recommendation logic
-        return self.songs[:k]
+        """Return the top k songs ranked by score against the user's profile."""
+        user_prefs = self._to_prefs(user)
+        scored = sorted(
+            self.songs,
+            key=lambda s: score_song(user_prefs, self._to_dict(s))[0],
+            reverse=True,
+        )
+        return scored[:k]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
-        # TODO: Implement explanation logic
-        return "Explanation placeholder"
+        """Return a human-readable breakdown of why a song was recommended."""
+        _, reasons = score_song(self._to_prefs(user), self._to_dict(song))
+        return "\n".join(reasons)
+
+def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
+    """
+    Scores a single song against user preferences.
+    Returns (total_score, reasons) where reasons explains each component.
+    """
+    import math
+    reasons = []
+
+    # Mood score — similarity table lookup
+    user_mood = user_prefs["favorite_mood"]
+    song_mood = song["mood"]
+    mood_sim = MOOD_SIMILARITY.get(user_mood, {}).get(song_mood, 0.0)
+    mood_score = 0.35 * mood_sim
+    reasons.append(f"mood '{song_mood}' vs '{user_mood}' (+{mood_score:.2f})")
+
+    # Genre score — similarity table lookup
+    user_genre = user_prefs["favorite_genre"]
+    song_genre = song["genre"]
+    genre_sim = GENRE_SIMILARITY.get(user_genre, {}).get(song_genre, 0.0)
+    genre_score = 0.25 * genre_sim
+    reasons.append(f"genre '{song_genre}' vs '{user_genre}' (+{genre_score:.2f})")
+
+    # Energy score — Gaussian proximity (σ = 0.20)
+    target_energy = user_prefs["target_energy"]
+    energy_sim = math.exp(-((song["energy"] - target_energy) ** 2) / (2 * 0.20 ** 2))
+    energy_score = 0.25 * energy_sim
+    reasons.append(f"energy {song['energy']:.2f} vs target {target_energy:.2f} (+{energy_score:.2f})")
+
+    # Acousticness score — boolean directional
+    likes_acoustic = user_prefs["likes_acoustic"]
+    acoustic_sim = song["acousticness"] if likes_acoustic else (1 - song["acousticness"])
+    acoustic_score = 0.15 * acoustic_sim
+    reasons.append(f"acousticness {song['acousticness']:.2f} ({'acoustic' if likes_acoustic else 'electronic'} preference) (+{acoustic_score:.2f})")
+
+    total = mood_score + genre_score + energy_score + acoustic_score
+    return total, reasons
+
 
 def load_songs(csv_path: str) -> List[Dict]:
     """
     Loads songs from a CSV file.
     Required by src/main.py
     """
-    # TODO: Implement CSV loading logic
-    print(f"Loading songs from {csv_path}...")
-    return []
+    import csv
+    songs = []
+    with open(csv_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            songs.append({
+                "id":            int(row["id"]),
+                "title":         row["title"],
+                "artist":        row["artist"],
+                "genre":         row["genre"],
+                "mood":          row["mood"],
+                "energy":        float(row["energy"]),
+                "tempo_bpm":     float(row["tempo_bpm"]),
+                "valence":       float(row["valence"]),
+                "danceability":  float(row["danceability"]),
+                "acousticness":  float(row["acousticness"]),
+            })
+    return songs
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """
     Functional implementation of the recommendation logic.
     Required by src/main.py
     """
-    # TODO: Implement scoring and ranking logic
-    # Expected return format: (song_dict, score, explanation)
-    return []
+    scored = [
+        (song, *score_song(user_prefs, song))
+        for song in songs
+    ]
+    ranked = sorted(scored, key=lambda x: x[1], reverse=True)
+    return [(song, score, "\n  ".join(reasons)) for song, score, reasons in ranked[:k]]

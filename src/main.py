@@ -9,11 +9,15 @@ You will implement the functions in recommender.py:
 - recommend_songs
 """
 
+import os
 from recommender import load_songs, recommend_songs
+
+DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "songs.csv")
 
 
 def main() -> None:
-    songs = load_songs("data/songs.csv") 
+    songs = load_songs(DATA_PATH)
+    print(f"Loaded songs: {len(songs)}")
 
     # Taste profile — keys match UserProfile fields in recommender.py exactly.
     user_prefs = {
@@ -30,8 +34,8 @@ def main() -> None:
         # You decide the structure of each returned item.
         # A common pattern is: (song, score, explanation)
         song, score, explanation = rec
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {explanation}")
+        print(f"Title: {song['title']:<30} Score: {score:.2f}")
+        print(f"Reasons: {explanation}")
         print()
 
 
