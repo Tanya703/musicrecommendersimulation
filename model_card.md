@@ -34,6 +34,8 @@ The four component scores are then added up with different weights: mood counts 
 
 The main changes from the starter logic were expanding the mood and genre similarity tables to cover a wider range of categories, and adding more song variety to the catalog to better test edge cases.
 
+The additional change was the implementation of Diversity Penalty feature that penalizes the same artist apearing multiple times in the recommendation list. The feature uses the decay factor that controls how harsh that penalty is: 0.5 halves an artist's score with each repeat. 
+
 ---
 
 ## 4. Data  
