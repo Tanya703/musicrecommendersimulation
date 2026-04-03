@@ -314,7 +314,7 @@ The LoRoom Fan result showed the strongest effect: 4-of-5 dominated by one artis
 
 Recommendations are now printed as a formatted table using the [`tabulate`](https://pypi.org/project/tabulate/) library. Each row shows the song's rank, title, artist, score, and a plain-English breakdown of why it was recommended.
 
-<img src="testimages/updatedvisualdisplay.png" alt="Updated terminal table display" width="250"/>
+<img src="testimages/updatedvisualdisplay.png" alt="Updated terminal table display" width="600"/>
 
 
 ---
