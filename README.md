@@ -218,21 +218,21 @@ These three profiles test the basic case: a listener whose genre, mood, and ener
 **Chill Lofi** — a listener who wants calm, acoustic lofi music at low energy.
 The system gave exactly the right results. The top two songs were both lofi and chill, with the more acoustic one ranked first. Everything matched and the scores reflected it clearly.
 
-<img src="testimages/Screenshot 2026-04-02 145223.png" alt="Chill Lofi results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145223.png" alt="Chill Lofi results" width="250"/>
 
 ---
 
 **High-Energy Pop** — a listener who wants upbeat, electronic pop at high energy.
 Again a clean result. Sunrise City (pop, happy, high energy) came out on top with a near-perfect score. The system correctly rewarded songs that matched on all three main dimensions.
 
-<img src="testimages/Screenshot 2026-04-02 145306.png" alt="High-Energy Pop results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145306.png" alt="High-Energy Pop results" width="250"/>
 
 ---
 
 **Deep Intense Rock** — a listener who wants loud, intense rock at very high energy.
 Storm Runner scored 0.98 — almost perfect. Rock and intense mood aligned exactly. The system also surfaced a pop track (Gym Hero) in second place because its energy was a near-perfect match, even though the genre was off. This was the first hint that energy can sometimes matter more than genre.
 
-<img src="testimages/Screenshot 2026-04-02 145320.png" alt="Deep Intense Rock results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145320.png" alt="Deep Intense Rock results" width="250"/>
 
 ---
 
@@ -245,42 +245,42 @@ These profiles were designed to push the system into tricky situations where no 
 **Sad Headbanger** — a listener who wants metal music but is in a sad mood.
 The problem: sad and aggressive are treated as completely unrelated moods, so mood gave zero points to every metal song. The system ended up recommending the right songs (metal and rock) purely because of genre and energy — but for the wrong reason. The mood preference was completely ignored.
 
-<img src="testimages/Screenshot 2026-04-02 145346.png" alt="Sad Headbanger results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145346.png" alt="Sad Headbanger results" width="250"/>
 
 ---
 
 **Acoustic Headbanger** — a listener who wants intense rock at very high energy but also prefers acoustic instruments.
 The problem: almost every high-energy song in the catalog is electronic or electric, not acoustic. The system kept recommending the same loud rock songs as before, and the acoustic preference barely changed the rankings at all. When preferences contradict each other, the heavier weights win and the lighter one is drowned out.
 
-<img src="testimages/Screenshot 2026-04-02 145359.png" alt="Acoustic Headbanger results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145359.png" alt="Acoustic Headbanger results" width="250"/>
 
 ---
 
 **Lofi Minimalist** — a listener who wants lofi and chill, but prefers electronic over acoustic, and has a very specific energy target (0.385) that falls exactly between two equally good lofi songs.
 The problem: both top songs matched mood, genre, and energy almost identically. The only thing that separated them was acousticness — even though that was only 15% of the score. Midnight Coding (less acoustic) came out first over Library Rain (very acoustic) purely because of that one flag. A tiny preference became the deciding factor.
 
-<img src="testimages/Screenshot 2026-04-02 145415.png" alt="Lofi Minimalist results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145415.png" alt="Lofi Minimalist results" width="250"/>
 
 ---
 
 **Romantic Metalhead** — a listener who prefers metal but is in a romantic mood, wants low energy, and likes acoustic instruments — basically the opposite of what metal sounds like.
 The system recommended Ivory Rain (classical) as the top result instead of any metal song. Three out of four preferences (mood, energy, acousticness) pointed away from metal, so classical won even though metal was the stated genre preference. This shows that genre alone (25% weight) is not enough to override everything else.
 
-<img src="testimages/Screenshot 2026-04-02 145427.png" alt="Romantic Metalhead results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145427.png" alt="Romantic Metalhead results" width="250"/>
 
 ---
 
 **Tired Raver** — a listener who wants electronic music at very high energy but is in a serene, calm mood.
 The problem: serene and energetic are treated as completely unrelated, so no high-energy song earned any mood points at all. The top results were purely driven by genre and energy. The system basically pretended the mood preference didn't exist — the same failure as Sad Headbanger, but in a different direction.
 
-<img src="testimages/Screenshot 2026-04-02 145439.png" alt="Tired Raver results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145439.png" alt="Tired Raver results" width="250"/>
 
 ---
 
 **Max Energy Seeker** — a listener who wants pop music at the absolute maximum energy (1.0).
 No song in the catalog hits 1.0 energy, so every result is a partial match. Gym Hero (pop, intense, 0.93 energy) came first — which makes sense. But Storm Runner (rock, not pop) came second, beating out other pop songs because its energy of 0.91 was closer to 1.0 than theirs. A tiny energy advantage was enough to push a rock song above pop songs for a pop listener.
 
-<img src="testimages/Screenshot 2026-04-02 145457.png" alt="Max Energy Seeker results" width="500"/>
+<img src="testimages/Screenshot 2026-04-02 145457.png" alt="Max Energy Seeker results" width="250"/>
 
 ---
 
@@ -314,7 +314,7 @@ The LoRoom Fan result showed the strongest effect: 4-of-5 dominated by one artis
 
 Recommendations are now printed as a formatted table using the [`tabulate`](https://pypi.org/project/tabulate/) library. Each row shows the song's rank, title, artist, score, and a plain-English breakdown of why it was recommended.
 
-<img src="testimages/updatedvisualdisplay.png" alt="Updated terminal table display" width="700"/>
+<img src="testimages/updatedvisualdisplay.png" alt="Updated terminal table display" width="250"/>
 
 
 ---
