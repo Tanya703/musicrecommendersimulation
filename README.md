@@ -38,10 +38,10 @@ Each `Song` uses two types of features:
 `UserProfile` directly mirrors the song features. It stores the user's preferred values, built by averaging feature values across songs the user has liked or listened to completion:
 
 ```
-preferred_mood         = "chill"
-preferred_genre        = "lofi"
-preferred_energy       = 0.75
-preferred_acousticness = True 
+favorite_mood   = "chill"
+favorite_genre  = "lofi"
+target_energy   = 0.75
+likes_acoustic  = True
 ```
 
 ### How the Recommender Scores Each Song
@@ -52,29 +52,46 @@ Each song is scored individually against the user profile using two rules:
 
 Mood similarity — adjacent moods get partial credit:
 
-| | chill | relaxed | focused | moody | happy | intense |
-|---|---|---|---|---|---|---|
-| **chill** | 1.0 | 0.7 | 0.4 | 0.2 | 0.1 | 0.0 |
-| **relaxed** | 0.7 | 1.0 | 0.4 | 0.3 | 0.2 | 0.0 |
-| **focused** | 0.4 | 0.4 | 1.0 | 0.2 | 0.1 | 0.1 |
-| **moody** | 0.2 | 0.3 | 0.2 | 1.0 | 0.0 | 0.2 |
-| **happy** | 0.1 | 0.2 | 0.1 | 0.0 | 1.0 | 0.3 |
-| **intense** | 0.0 | 0.0 | 0.1 | 0.2 | 0.3 | 1.0 |
+| | chill | relaxed | focused | moody | happy | intense | melancholic | nostalgic | romantic | sad | serene | energetic | aggressive | tense |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **chill** | 1.0 | 0.7 | 0.4 | 0.2 | 0.1 | 0.0 | 0.2 | 0.3 | 0.3 | 0.1 | 0.8 | 0.0 | 0.0 | 0.0 |
+| **relaxed** | 0.7 | 1.0 | 0.4 | 0.3 | 0.2 | 0.0 | 0.2 | 0.4 | 0.4 | 0.1 | 0.6 | 0.1 | 0.0 | 0.0 |
+| **focused** | 0.4 | 0.4 | 1.0 | 0.2 | 0.1 | 0.1 | 0.1 | 0.1 | 0.1 | 0.0 | 0.3 | 0.3 | 0.0 | 0.2 |
+| **moody** | 0.2 | 0.3 | 0.2 | 1.0 | 0.0 | 0.2 | 0.6 | 0.4 | 0.2 | 0.5 | 0.1 | 0.1 | 0.2 | 0.3 |
+| **happy** | 0.1 | 0.2 | 0.1 | 0.0 | 1.0 | 0.3 | 0.0 | 0.3 | 0.4 | 0.0 | 0.2 | 0.5 | 0.0 | 0.0 |
+| **intense** | 0.0 | 0.0 | 0.1 | 0.2 | 0.3 | 1.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.7 | 0.6 | 0.5 |
+| **melancholic** | 0.2 | 0.2 | 0.1 | 0.6 | 0.0 | 0.0 | 1.0 | 0.5 | 0.2 | 0.7 | 0.1 | 0.0 | 0.0 | 0.1 |
+| **nostalgic** | 0.3 | 0.4 | 0.1 | 0.4 | 0.3 | 0.0 | 0.5 | 1.0 | 0.4 | 0.3 | 0.3 | 0.1 | 0.0 | 0.0 |
+| **romantic** | 0.3 | 0.4 | 0.1 | 0.2 | 0.4 | 0.0 | 0.2 | 0.4 | 1.0 | 0.1 | 0.4 | 0.2 | 0.0 | 0.0 |
+| **sad** | 0.1 | 0.1 | 0.0 | 0.5 | 0.0 | 0.0 | 0.7 | 0.3 | 0.1 | 1.0 | 0.1 | 0.0 | 0.0 | 0.1 |
+| **serene** | 0.8 | 0.6 | 0.3 | 0.1 | 0.2 | 0.0 | 0.1 | 0.3 | 0.4 | 0.1 | 1.0 | 0.0 | 0.0 | 0.0 |
+| **energetic** | 0.0 | 0.1 | 0.3 | 0.1 | 0.5 | 0.7 | 0.0 | 0.1 | 0.2 | 0.0 | 0.0 | 1.0 | 0.4 | 0.3 |
+| **aggressive** | 0.0 | 0.0 | 0.0 | 0.2 | 0.0 | 0.6 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.4 | 1.0 | 0.5 |
+| **tense** | 0.0 | 0.0 | 0.2 | 0.3 | 0.0 | 0.5 | 0.1 | 0.0 | 0.0 | 0.1 | 0.0 | 0.3 | 0.5 | 1.0 |
 
 Genre similarity — structurally related genres get partial credit:
 
-| | lofi | ambient | jazz | synthwave | pop | rock |
-|---|---|---|---|---|---|---|
-| **lofi** | 1.0 | 0.6 | 0.4 | 0.2 | 0.1 | 0.0 |
-| **ambient** | 0.6 | 1.0 | 0.3 | 0.3 | 0.1 | 0.0 |
-| **jazz** | 0.4 | 0.3 | 1.0 | 0.1 | 0.2 | 0.1 |
-| **synthwave** | 0.2 | 0.3 | 0.1 | 1.0 | 0.4 | 0.2 |
-| **pop** | 0.1 | 0.1 | 0.2 | 0.4 | 1.0 | 0.3 |
-| **rock** | 0.0 | 0.0 | 0.1 | 0.2 | 0.3 | 1.0 |
+| | lofi | ambient | jazz | synthwave | pop | rock | soul | metal | country | electronic | r&b | folk | drum and bass | classical | indie pop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **lofi** | 1.0 | 0.6 | 0.4 | 0.2 | 0.1 | 0.0 | 0.3 | 0.0 | 0.1 | 0.2 | 0.2 | 0.4 | 0.1 | 0.3 | 0.2 |
+| **ambient** | 0.6 | 1.0 | 0.3 | 0.3 | 0.1 | 0.0 | 0.2 | 0.0 | 0.0 | 0.4 | 0.1 | 0.3 | 0.1 | 0.5 | 0.2 |
+| **jazz** | 0.4 | 0.3 | 1.0 | 0.1 | 0.2 | 0.1 | 0.5 | 0.0 | 0.2 | 0.1 | 0.4 | 0.3 | 0.1 | 0.4 | 0.2 |
+| **synthwave** | 0.2 | 0.3 | 0.1 | 1.0 | 0.4 | 0.2 | 0.1 | 0.1 | 0.0 | 0.6 | 0.1 | 0.0 | 0.3 | 0.1 | 0.3 |
+| **pop** | 0.1 | 0.1 | 0.2 | 0.4 | 1.0 | 0.3 | 0.3 | 0.0 | 0.2 | 0.3 | 0.4 | 0.2 | 0.1 | 0.1 | 0.7 |
+| **rock** | 0.0 | 0.0 | 0.1 | 0.2 | 0.3 | 1.0 | 0.1 | 0.5 | 0.2 | 0.1 | 0.1 | 0.2 | 0.1 | 0.0 | 0.3 |
+| **soul** | 0.3 | 0.2 | 0.5 | 0.1 | 0.3 | 0.1 | 1.0 | 0.0 | 0.2 | 0.1 | 0.7 | 0.2 | 0.0 | 0.2 | 0.2 |
+| **metal** | 0.0 | 0.0 | 0.0 | 0.1 | 0.0 | 0.5 | 0.0 | 1.0 | 0.0 | 0.1 | 0.0 | 0.0 | 0.2 | 0.0 | 0.0 |
+| **country** | 0.1 | 0.0 | 0.2 | 0.0 | 0.2 | 0.2 | 0.2 | 0.0 | 1.0 | 0.0 | 0.1 | 0.6 | 0.0 | 0.1 | 0.2 |
+| **electronic** | 0.2 | 0.4 | 0.1 | 0.6 | 0.3 | 0.1 | 0.1 | 0.1 | 0.0 | 1.0 | 0.2 | 0.0 | 0.5 | 0.1 | 0.2 |
+| **r&b** | 0.2 | 0.1 | 0.4 | 0.1 | 0.4 | 0.1 | 0.7 | 0.0 | 0.1 | 0.2 | 1.0 | 0.1 | 0.1 | 0.1 | 0.3 |
+| **folk** | 0.4 | 0.3 | 0.3 | 0.0 | 0.2 | 0.2 | 0.2 | 0.0 | 0.6 | 0.0 | 0.1 | 1.0 | 0.0 | 0.3 | 0.4 |
+| **drum and bass** | 0.1 | 0.1 | 0.1 | 0.3 | 0.1 | 0.1 | 0.0 | 0.2 | 0.0 | 0.5 | 0.1 | 0.0 | 1.0 | 0.0 | 0.0 |
+| **classical** | 0.3 | 0.5 | 0.4 | 0.1 | 0.1 | 0.0 | 0.2 | 0.0 | 0.1 | 0.1 | 0.1 | 0.3 | 0.0 | 1.0 | 0.1 |
+| **indie pop** | 0.2 | 0.2 | 0.2 | 0.3 | 0.7 | 0.3 | 0.2 | 0.0 | 0.2 | 0.2 | 0.3 | 0.4 | 0.0 | 0.1 | 1.0 |
 
 ```
-mood_score  = MOOD_SIMILARITY[user.preferred_mood][song.mood]
-genre_score = GENRE_SIMILARITY[user.preferred_genre][song.genre]
+mood_score  = MOOD_SIMILARITY[user.favorite_mood][song.mood]
+genre_score = GENRE_SIMILARITY[user.favorite_genre][song.genre]
 ```
 
 **Numeric features → Gaussian proximity** (rewards closeness to the user's preference, not just high or low values):
@@ -93,6 +110,8 @@ acousticness_score = song.acousticness        if likes_acoustic = True
 - `True` → rewards organic/acoustic songs
 - `False` → rewards electronic/synthetic songs
 
+
+
 **Weighted combination:**
 ```
 total_score = 0.35 × mood_score
@@ -108,18 +127,44 @@ total_score = 0.35 × mood_score
 | energy | 0.25 | Gaussian (σ = 0.20) | Strongest numeric separator in the dataset |
 | acousticness | 0.15 | boolean directional | Cleanly separates organic from electronic |
 
+**Diversity Penalty — Artist Decay**
+
+Songs are not simply sorted by score and sliced. Instead they are selected one at a time using a greedy loop with an artist diversity penalty. Each time an artist already appears in the results, every remaining song by that artist has its score multiplied by `artist_decay` before the next pick is made.
+
+```
+effective_score = base_score × (artist_decay ^ times_artist_already_selected)
+```
+
+With the default `artist_decay = 0.5`:
+- 1st song from an artist: score × 1.0 — no penalty
+- 2nd song from that artist: score × 0.5 — halved
+- 3rd: score × 0.25 — quartered
+
+| `artist_decay` | Behaviour |
+|---|---|
+| `1.0` | No penalty — equivalent to a plain top-k sort |
+| `0.5` | Each repeat from the same artist is halved (default) |
+| `0.0` | Hard block — at most one song per artist |
+
+This prevents a single dominant artist from filling all top slots while still allowing a second song from the same artist if no strong alternative exists.
+| energy | 0.25 | Gaussian (σ = 0.20) | Strongest numeric separator in the dataset |
+| acousticness | 0.15 | boolean directional | Cleanly separates organic from electronic |
+
 ### How Songs Are Chosen
 
-Once every song has a score, the ranking rule builds the final list:
+1. Load the data about songs
+2. Read the user profiles
+3. Score every song against the user profile based on mood, genrem energy and acoustic match 
+4. Pick the #1 song with thehighest score and add it to the final recommendations
+5. Halve the score of every remaining song by that same artist
+6. Pick the new #1 and add it to the results
+7. Repeat until 5 songs are selected
 
-1. Score every song in the catalog
-2. Sort by score descending
-3. Enforce diversity — no two consecutive songs with the same genre + mood
-4. Break ties by energy proximity
-5. Return top N
+Each time an artist is picked, their remaining songs get cheaper. A second song from the same artist can still appear — but only if nothing else scores higher after the penalty.
+
 
 ### Full Flow
-<img src="dataflow.png" alt="Dataflow" width="500" />
+<img src="dataflowUpdated.png" alt="Dataflow" width="500" />
 
 ### Potential Biases
 
@@ -238,6 +283,35 @@ The problem: serene and energetic are treated as completely unrelated, so no hig
 No song in the catalog hits 1.0 energy, so every result is a partial match. Gym Hero (pop, intense, 0.93 energy) came first — which makes sense. But Storm Runner (rock, not pop) came second, beating out other pop songs because its energy of 0.91 was closer to 1.0 than theirs. A tiny energy advantage was enough to push a rock song above pop songs for a pop listener.
 
 <img src="testimages/Screenshot 2026-04-02 145457.png" alt="Max Energy Seeker results" width="500"/>
+
+---
+
+### Diversity Penalty — Testing and Results
+
+Two profiles were created specifically to test this feature, each targeting an artist with 4 songs in the catalog so the penalty's effect would be visible.
+
+**LoRoom Fan** (`favorite_genre=lofi, favorite_mood=focused, target_energy=0.40, likes_acoustic=True`) — LoRoom has 4 lofi songs that all score highly for this profile. Without the penalty, they fill 4 of the 5 result slots. With `artist_decay=0.5`, each additional LoRoom pick is halved, and other artists surface instead.
+
+| Rank | No Penalty (`decay=1.0`) | With Penalty (`decay=0.5`) |
+|---|---|---|
+| #1 | LoRoom – Late Night Study (0.970) | LoRoom – Late Night Study (0.970) |
+| #2 | LoRoom – Focus Flow (0.967) | Paper Lanterns – Library Rain (0.761) |
+| #3 | Paper Lanterns – Library Rain (0.761) | Orbit Bloom – Spacewalk Thoughts (0.637) |
+| #4 | LoRoom – Dusty Loops (0.759) | Slow Stereo – Coffee Shop Stories (0.621) |
+| #5 | LoRoom – Midnight Coding (0.745) | Clara Voss – Ivory Rain (0.510) |
+
+**Neon Echo Fan** (`favorite_genre=synthwave, favorite_mood=energetic, target_energy=0.85, likes_acoustic=False`) — Neon Echo has 4 songs across synthwave and pop. The penalty's effect here is subtler — only position #5 changes — because the other non-Neon Echo songs in the catalog already score competitively for this profile.
+
+| Rank | No Penalty (`decay=1.0`) | With Penalty (`decay=0.5`) |
+|---|---|---|
+| #1 | Neon Echo – Solar Flare (0.982) | Neon Echo – Solar Flare (0.982) |
+| #2 | Gridlock – Neon Pulse (0.884) | Gridlock – Neon Pulse (0.884) |
+| #3 | Max Pulse – Gym Hero (0.718) | Max Pulse – Gym Hero (0.718) |
+| #4 | Voltline – Storm Runner (0.669) | Voltline – Storm Runner (0.669) |
+| **#5** | **Neon Echo – Sunrise City (0.645)** | **Indigo Parade – Rooftop Lights (0.573)** |
+
+The LoRoom Fan result showed the strongest effect: 4-of-5 dominated by one artist became 1-of-5. The Neon Echo Fan result showed the penalty working correctly at the margin — Sunrise City's score of 0.645 was halved to 0.32, which fell below Rooftop Lights at 0.573.
+
 
 ---
 

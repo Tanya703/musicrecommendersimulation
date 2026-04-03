@@ -97,15 +97,38 @@ class Recommender:
             "acousticness": song.acousticness,
         }
 
-    def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        """Return the top k songs ranked by score against the user's profile."""
-        user_prefs = self._to_prefs(user)
-        scored = sorted(
-            self.songs,
-            key=lambda s: score_song(user_prefs, self._to_dict(s))[0],
-            reverse=True,
-        )
-        return scored[:k]
+    def recommend(self, user: UserProfile, k: int = 5, artist_decay: float = 0.5) -> List[Song]:
+        """Return the top k songs ranked by score against the user's profile.
+
+        Uses a greedy diversity penalty to avoid recommending too many songs
+        from the same artist. Instead of sorting all songs once and slicing,
+        songs are selected one at a time. Each time an artist is already
+        represented in the results, every remaining song by that artist has
+        its score multiplied by `artist_decay` before the next pick.
+
+        artist_decay controls how harshly repeat artists are penalized:
+            1.0 — no penalty (same as a plain top-k sort)
+            0.5 — score halved for each additional song from the same artist
+            0.0 — hard block: only one song per artist ever selected
+        """
+        prefs = self._to_prefs(user)
+        candidates = [(s, score_song(prefs, self._to_dict(s))[0]) for s in self.songs]
+        artist_counts: Dict[str, int] = {}
+        results: List[Song] = []
+
+        for _ in range(k):
+            remaining = [(s, sc) for s, sc in candidates if s not in results]
+            if not remaining:
+                break
+            penalized = [
+                (s, sc * (artist_decay ** artist_counts.get(s.artist, 0)))
+                for s, sc in remaining
+            ]
+            best = max(penalized, key=lambda x: x[1])
+            results.append(best[0])
+            artist_counts[best[0].artist] = artist_counts.get(best[0].artist, 0) + 1
+
+        return results
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
         """Return a human-readable breakdown of why a song was recommended."""
@@ -174,14 +197,36 @@ def load_songs(csv_path: str) -> List[Dict]:
             })
     return songs
 
-def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
+def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5, artist_decay: float = 0.5) -> List[Tuple[Dict, float, str]]:
     """
     Functional implementation of the recommendation logic.
     Required by src/main.py
+
+    Uses a greedy diversity penalty to avoid recommending too many songs
+    from the same artist. Instead of sorting all songs once and slicing,
+    songs are selected one at a time. Each time an artist is already
+    represented in the results, every remaining song by that artist has
+    its score multiplied by `artist_decay` before the next pick.
+
+    artist_decay controls how harshly repeat artists are penalized:
+        1.0 — no penalty (same as a plain top-k sort)
+        0.5 — score halved for each additional song from the same artist
+        0.0 — hard block: only one song per artist ever selected
     """
-    scored = [
-        (song, *score_song(user_prefs, song))
-        for song in songs
-    ]
-    ranked = sorted(scored, key=lambda x: x[1], reverse=True)
-    return [(song, score, "\n  ".join(reasons)) for song, score, reasons in ranked[:k]]
+    candidates = [(song, *score_song(user_prefs, song)) for song in songs]
+    artist_counts: Dict[str, int] = {}
+    results = []
+
+    for _ in range(k):
+        remaining = [(s, sc, r) for s, sc, r in candidates if s not in [x[0] for x in results]]
+        if not remaining:
+            break
+        penalized = [
+            (s, sc * (artist_decay ** artist_counts.get(s["artist"], 0)), r)
+            for s, sc, r in remaining
+        ]
+        best = max(penalized, key=lambda x: x[1])
+        results.append(best)
+        artist_counts[best[0]["artist"]] = artist_counts.get(best[0]["artist"], 0) + 1
+
+    return [(song, score, "\n  ".join(reasons)) for song, score, reasons in results]

@@ -96,6 +96,28 @@ USERS = {
         "target_energy":  1.0,
         "likes_acoustic": False,
     },
+
+    # --- DIVERSITY PENALTY TEST PROFILES ---
+
+    # Neon Echo has 4 songs spanning synthwave/pop — this profile scores 3 of
+    # them highly enough that without the penalty all top-3 slots go to Neon Echo.
+    # With artist_decay=0.5, later picks are penalized and other artists surface.
+    "Neon Echo Fan": {
+        "favorite_genre": "synthwave",
+        "favorite_mood":  "energetic",
+        "target_energy":  0.85,
+        "likes_acoustic": False,
+    },
+
+    # LoRoom has 4 lofi songs — a lofi+focused profile scores all four above
+    # non-lofi alternatives, making the top-4 LoRoom-only without the penalty.
+    # With artist_decay=0.5, repeat picks are halved, surfacing other lofi artists.
+    "LoRoom Fan": {
+        "favorite_genre": "lofi",
+        "favorite_mood":  "focused",
+        "target_energy":  0.40,
+        "likes_acoustic": True,
+    },
 }
 
 
