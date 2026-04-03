@@ -133,7 +133,7 @@ Prompts:
 
 Adding more song attributes would make matching more precise — tempo, danceability, and valence are already in the dataset but currently unused. Letting listeners rank their preferences (for example, "mood matters more to me than genre") would also help instead of applying the same fixed weights to everyone.
 
-The diversity problem could be addressed by adding a rule that penalises a song slightly if something very similar has already been selected — so the top 5 feels varied rather than clustered around one corner of the catalog.
+$CURSOR$[Completed in Updated Version] ✅ Artist Diversity Feature Implemented ~~The diversity problem could be addressed by adding a rule that penalises a song slightly if something very similar has already been selected — so the top 5 feels varied rather than clustered around one corner of the catalog.~~
 
 Explanations could be friendlier. Instead of showing raw numbers, the system could say something like "this song matches your mood perfectly and is close to your energy target" in plain language.
 
