@@ -148,26 +148,56 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     song_mood = song["mood"]
     mood_sim = MOOD_SIMILARITY.get(user_mood, {}).get(song_mood, 0.0)
     mood_score = 0.35 * mood_sim
-    reasons.append(f"mood '{song_mood}' vs '{user_mood}' (+{mood_score:.2f})")
+    if mood_sim >= 0.9:
+        mood_label = f"Vibe: perfect match for your {user_mood} mood"
+    elif mood_sim >= 0.5:
+        mood_label = f"Vibe: feels close to {user_mood} (song is {song_mood})"
+    elif mood_sim >= 0.2:
+        mood_label = f"Vibe: loosely related to {user_mood} (song is {song_mood})"
+    else:
+        mood_label = f"Vibe: doesn't really match your {user_mood} mood"
+    reasons.append(mood_label)
 
     # Genre score — similarity table lookup
     user_genre = user_prefs["favorite_genre"]
     song_genre = song["genre"]
     genre_sim = GENRE_SIMILARITY.get(user_genre, {}).get(song_genre, 0.0)
     genre_score = 0.25 * genre_sim
-    reasons.append(f"genre '{song_genre}' vs '{user_genre}' (+{genre_score:.2f})")
+    if genre_sim >= 0.9:
+        genre_label = f"Genre: exactly your style ({song_genre})"
+    elif genre_sim >= 0.5:
+        genre_label = f"Genre: closely related to {user_genre} ({song_genre})"
+    elif genre_sim >= 0.2:
+        genre_label = f"Genre: shares some qualities with {user_genre} ({song_genre})"
+    else:
+        genre_label = f"Genre: a bit outside your usual style ({song_genre})"
+    reasons.append(genre_label)
 
     # Energy score — Gaussian proximity (σ = 0.20)
     target_energy = user_prefs["target_energy"]
     energy_sim = math.exp(-((song["energy"] - target_energy) ** 2) / (2 * 0.20 ** 2))
     energy_score = 0.25 * energy_sim
-    reasons.append(f"energy {song['energy']:.2f} vs target {target_energy:.2f} (+{energy_score:.2f})")
+    diff = song["energy"] - target_energy
+    if energy_sim >= 0.9:
+        energy_label = "Energy: spot on for what you're looking for"
+    elif energy_sim >= 0.5:
+        energy_label = f"Energy: {'a bit more' if diff > 0 else 'a bit less'} energetic than you prefer"
+    else:
+        energy_label = f"Energy: {'much more' if diff > 0 else 'much calmer'} than your usual taste"
+    reasons.append(energy_label)
 
     # Acousticness score — boolean directional
     likes_acoustic = user_prefs["likes_acoustic"]
     acoustic_sim = song["acousticness"] if likes_acoustic else (1 - song["acousticness"])
     acoustic_score = 0.15 * acoustic_sim
-    reasons.append(f"acousticness {song['acousticness']:.2f} ({'acoustic' if likes_acoustic else 'electronic'} preference) (+{acoustic_score:.2f})")
+    pref = "acoustic" if likes_acoustic else "electronic"
+    if acoustic_sim >= 0.7:
+        acoustic_label = f"Sound: great {pref} feel, just how you like it"
+    elif acoustic_sim >= 0.4:
+        acoustic_label = f"Sound: somewhat {pref}, close to your preference"
+    else:
+        acoustic_label = f"Sound: not very {pref}, doesn't match your preference"
+    reasons.append(acoustic_label)
 
     total = mood_score + genre_score + energy_score + acoustic_score
     return total, reasons

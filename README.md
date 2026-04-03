@@ -312,6 +312,12 @@ Two profiles were created specifically to test this feature, each targeting an a
 
 The LoRoom Fan result showed the strongest effect: 4-of-5 dominated by one artist became 1-of-5. The Neon Echo Fan result showed the penalty working correctly at the margin — Sunrise City's score of 0.645 was halved to 0.32, which fell below Rooftop Lights at 0.573.
 
+### Updated Terminal Display
+
+Recommendations are now printed as a formatted table using the [`tabulate`](https://pypi.org/project/tabulate/) library. Each row shows the song's rank, title, artist, score, and a plain-English breakdown of why it was recommended.
+
+<img src="testimages/updatedvisualdisplay.png" alt="Updated terminal table display" width="700"/>
+
 
 ---
 

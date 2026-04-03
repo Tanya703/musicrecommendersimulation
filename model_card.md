@@ -51,6 +51,7 @@ The catalog contains 18 songs spanning 15 genres — lofi, pop, rock, ambient, j
 
 The catalog is intentionally small for a simulation, which creates some gaps. Most genres and moods have only one song each, so when a listener's first-choice genre has no good match, the fallback options are very limited. Energy levels also cluster at the quiet end and the loud end, leaving almost nothing for listeners who want something in the middle. Styles like reggae, hip-hop, blues, and Latin are completely absent, as are moods like nostalgic longing or quiet joy that sit between the defined categories. Real listening taste is much more varied and personal than this dataset can capture.
 
+
 ---
 
 ## 5. Strengths  
@@ -135,7 +136,7 @@ Adding more song attributes would make matching more precise — tempo, danceabi
 
 $CURSOR$[Completed in Updated Version] ✅ Artist Diversity Feature Implemented ~~The diversity problem could be addressed by adding a rule that penalises a song slightly if something very similar has already been selected — so the top 5 feels varied rather than clustered around one corner of the catalog.~~
 
-Explanations could be friendlier. Instead of showing raw numbers, the system could say something like "this song matches your mood perfectly and is close to your energy target" in plain language.
+$CURSOR$[Completed in Updated Version] ✅ Friendly Explanations & Tabulate Display Implemented ~~Explanations could be friendlier. Instead of showing raw numbers, the system could say something like "this song matches your mood perfectly and is close to your energy target" in plain language.~~
 
 For more complex tastes, the system could allow multiple moods or genres rather than just one of each — for example, someone who listens to both jazz and lo-fi, or wants something that is both focused and a little melancholic.
 

@@ -122,13 +122,38 @@ USERS = {
 
 
 def print_recommendations(label: str, recommendations) -> None:
-    print(f"\n{'='*50}")
-    print(f"User Profile: {label}")
-    print(f"{'='*50}")
-    for song, score, explanation in recommendations:
-        print(f"Title: {song['title']:<30} Score: {score:.2f}")
-        print(f"Reasons: {explanation}")
-        print()
+    try:
+        from tabulate import tabulate
+        use_tabulate = True
+    except ImportError:
+        use_tabulate = False
+
+    header = f" User Profile: {label} "
+    bar = "=" * max(50, len(header) + 2)
+    print(f"\n{bar}\n{header}\n{bar}")
+
+    if use_tabulate:
+        rows = []
+        for rank, (song, score, explanation) in enumerate(recommendations, 1):
+            reason_lines = explanation.split("\n")
+            first = reason_lines[0].strip()
+            rest  = "\n".join("  " + r.strip() for r in reason_lines[1:])
+            reasons_cell = first + ("\n" + rest if rest else "")
+            rows.append([rank, song["title"], song["artist"], f"{score:.2f}", reasons_cell])
+
+        print(tabulate(
+            rows,
+            headers=["#", "Title", "Artist", "Score", "Reasons"],
+            tablefmt="simple",
+            colalign=("right", "left", "left", "right", "left"),
+        ))
+    else:
+        # Fallback: plain ASCII if tabulate is not installed
+        for rank, (song, score, explanation) in enumerate(recommendations, 1):
+            title_artist = f"{rank}. {song['title']} — {song['artist']}"
+            print(f"\n  {title_artist:<45}  Score: {score:.2f}")
+            for reason in explanation.split("\n"):
+                print(f"     {reason.strip()}")
 
 def main() -> None:
     songs = load_songs(DATA_PATH)
