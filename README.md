@@ -147,8 +147,6 @@ With the default `artist_decay = 0.5`:
 | `0.0` | Hard block — at most one song per artist |
 
 This prevents a single dominant artist from filling all top slots while still allowing a second song from the same artist if no strong alternative exists.
-| energy | 0.25 | Gaussian (σ = 0.20) | Strongest numeric separator in the dataset |
-| acousticness | 0.15 | boolean directional | Cleanly separates organic from electronic |
 
 ### How Songs Are Chosen
 
